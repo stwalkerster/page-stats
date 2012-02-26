@@ -45,7 +45,19 @@
     </div>
 
     <div class="container">
-
+	<h2>General stats</h2>
+	<ul>
+	<li>First revision</li>
+	<li>Latest revision</li>
+	<li>Number of revisions</li>
+	<li>Average frequency of revisions</li>
+	<li>Number of contributing users</li>
+	<li>Number of edits per user to page</li>
+	<li>Average size delta per user</li>
+	<li>Average size delta per revision</li>
+	</ul>
+<h2>Page size over time</h2>
+<h2>Contributions over time</h2>
     </div> <!-- /container -->
 
     <!-- Le javascript
