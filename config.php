@@ -1,10 +1,10 @@
 <?php
 
-$activeDataSource = "db";
+$activeDataSource = "api";
 $username = "";
 $password = "";
 $domain = ""; // LDAP domain, or db server hostname
-$location = ""; // API url, or Database Name
+$location = "http://en.wikipedia.org/w/api.php"; // API url, or Database Name
 
 
 

@@ -1,3 +1,5 @@
+<?php
+$output = <<<HTML
 <div class="hero-unit">
 	<h1>Page Statistics Tool</h1>
 	<p>Gather many different statistics on various pages.</p>
@@ -11,11 +13,9 @@
 				<div class="input-prepend">
 					<span class="add-on">
 						<select class="span1" style="position: relative;left: -6px;top: -5px;">
-							<option>en</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
+HTML;
+
+$output.= <<<HTML
 						</select>
 						<span style="position: relative;left: -3px;top: -7px;font-weight: bold;">.</span>
 					</span>
@@ -38,11 +38,9 @@
 				<div class="input-prepend">
 					<span class="add-on">
 						<select class="span2" style="position: relative;left: -6px;top: -5px;">
-							<option></option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
+HTML;
+
+$output.= <<<HTML
 						</select>
 						<span style="position: relative;left: -6px;top: -7px;font-weight: bold;">:</span>
 					</span>
@@ -58,6 +56,8 @@
 		</div>
 	</div>
 </form>
+HTML;
+
 
 
             

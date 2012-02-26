@@ -1,19 +1,19 @@
 <?php
 abstract class DataSource
 {
-	protected __construct()
+	public function __construct($username, $password, $domain, $location)
 	{
-	
+		$this->username = $username;
+		$this->password = $password;
+		$this->domain = $domain;
+		$this->location = $location;
 	}
 	
-	private static $instance;
-	public static function getInstance()
-	{
-		if($instance == null)
-		{ $instance = new get_called_class(); }
-		return $instance;
-	}
-	
+	protected $username;
+	protected $password;
+	protected $domain;
+	protected $location;
+
 	/**
 	 *	Gets the data for the specified page in the format:
 	 *
@@ -26,4 +26,9 @@ abstract class DataSource
 	 *	)
 	 */
 	public abstract function getData($namespace, $page);
+	
+	/**
+	 *	Get an associative array of namespace IDs to namespace names
+	 */
+	public abstract function getNamespaces();
 }

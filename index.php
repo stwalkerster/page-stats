@@ -8,7 +8,7 @@ if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 }
 else
 { // not posted, show form
-	$output = file_get_contents("form.htmlfrag");
+	require("form.php");
 }
 
 include("header.htmlfrag"); 
