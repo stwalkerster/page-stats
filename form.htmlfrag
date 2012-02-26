@@ -1,0 +1,63 @@
+<div class="hero-unit">
+	<h1>Page Statistics Tool</h1>
+	<p>Gather many different statistics on various pages.</p>
+</div>
+<form>
+	<div class="row">
+		<div class="span8 offset2">
+			<h2>The Basic Stuff</h2>
+			<div class="well">
+				<label class="control-label">Which site do you want to look at?</label>
+				<div class="input-prepend">
+					<span class="add-on">
+						<select class="span1" style="position: relative;left: -6px;top: -5px;">
+							<option>en</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+						<span style="position: relative;left: -3px;top: -7px;font-weight: bold;">.</span>
+					</span>
+					<select class="span2 inline">
+						<option>wikipedia.org</option>
+						<option>wiktionary.org</option>
+						<option>wikiquote.org</option>
+						<option>wikibooks.org</option>
+						<option>wikisource.org</option>
+						<option>wikinews.org</option>
+						<option>wikiversity.org</option>
+						<!-- species -->
+						<!-- commons -->
+						<!-- mediawiki -->
+						<!-- meta -->
+					</select>
+				</div>
+
+				<label class="control-label" for="pageName">Which page do you want to look at?</label>
+				<div class="input-prepend">
+					<span class="add-on">
+						<select class="span2" style="position: relative;left: -6px;top: -5px;">
+							<option></option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+						<span style="position: relative;left: -6px;top: -7px;font-weight: bold;">:</span>
+					</span>
+					<input type="text" id="pageName" class="span4 inline" placeholder="Page title" />
+				</div>
+			</div>
+			<p>That's it! That's all I need to know! Hit the button below to make me do the maths and show you some interesting info!</p>
+			<div class="row">
+				<div class="offset2">
+					<button type="submit" class="btn btn-large btn-primary span2">Do the maths</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+
+            
