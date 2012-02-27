@@ -1,3 +1,4 @@
 
 config.local.php
 web.config
+templates_c/*
