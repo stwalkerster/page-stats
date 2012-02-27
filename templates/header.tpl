@@ -45,6 +45,11 @@
     </div>
 
     <div class="container">
+		{foreach $errors as $e}
+		<div class="alert">
+		  <strong>Warning!</strong> {$e}
+		</div>
+		{/foreach}
 		{if $showHero eq true}{include file="hero.tpl"}{/if}
 		<div class="page-header">
 			<h1>Page Statistics Tool</h1>

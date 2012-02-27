@@ -34,29 +34,46 @@ class ApiDataSource extends DataSource
 			"action" => "query",
 			"meta" => "userinfo"
 			));
-		if($apiresult['query']['userinfo']['id'] == 0)
-		{
-			$apiresult = $this->httpRequest($api, array(
-				"action" => "login",
-				"lgname" => $this->username,
-				"lgpassword" => $this->password,
-				"lgdomain" => $this->domain,
-				));
-			if($apiresult["login"]["result"] != "NeedToken")
-				throw new LoginFailedException("Login result: " . print_r($apiresult,true));
-				
-			$apiresult = $this->httpRequest($api, array(
-				"action" => "login",
-				"lgname" => $this->username,
-				"lgpassword" => $this->password,
-				"lgdomain" => $this->domain,
-				"lgtoken" => $apiresult["login"]["token"],
-				));
-			if($apiresult["login"]["result"] != "Success")
-				throw new LoginFailedException("Login result: " . print_r($apiresult,true));
+			
+		try{
+			if($apiresult['query']['userinfo']['id'] == 0)
+			{
+				$apiresult = $this->httpRequest($api, array(
+					"action" => "login",
+					"lgname" => $this->username,
+					"lgpassword" => $this->password,
+					"lgdomain" => $this->domain,
+					));
+				if($apiresult["login"]["result"] != "NeedToken")
+					throw new LoginFailedException("Login result: " . print_r($apiresult,true));
+					
+				$apiresult = $this->httpRequest($api, array(
+					"action" => "login",
+					"lgname" => $this->username,
+					"lgpassword" => $this->password,
+					"lgdomain" => $this->domain,
+					"lgtoken" => $apiresult["login"]["token"],
+					));
+				if($apiresult["login"]["result"] != "Success")
+					throw new LoginFailedException("Login result: " . print_r($apiresult,true));
+			}
 		}
+		catch(LoginFailedException $ex)
+		{
+			global $errors;
+			$errors[] = "Unable to log into requested API with default credentials. I shall continue logged-out, young shirelings!";
+		}
+		
+		$apiresult = $this->httpRequest($api, array(
+			"action" => "query",
+			"meta" => "siteinfo"
+			));
+			
+		$this->siteinfo = $apiresult['query']['general'];
 	}
 
+	public $siteinfo;
+	
 	public function getNamespaces()
 	{
 		$api = $this->location;

@@ -1,13 +1,14 @@
 <?php
 require_once("smarty/Smarty.class.php");
 $smarty = new Smarty();
-
+ini_set('display_errors',0);
 include_once("config.php");
 if(file_exists("config.local.php")){include_once("config.local.php");}
 	
 require_once("DataSource.php");
 require_once("ApiDataSource.php");
 require_once("DatabaseDataSource.php");
+require_once("LoginFailedException.php");
 
 $availabledatasources = array(
 	"db" => array(
@@ -20,6 +21,8 @@ $availabledatasources = array(
 	
 $dsconfig = $availabledatasources[$activeDataSource];
 session_start();
+
+$errors = array();
 
 if(isset($_REQUEST['wizard']))
 {
@@ -38,6 +41,8 @@ if(isset($_REQUEST['wizard']))
 			$smarty->assign("wizProgress", 33);
 			break;
 		case 3:
+			handleWizard3();
+			$smarty->assign("wizProgress", 33);
 			break;
 		case 4:
 			handleWizard4();
@@ -45,6 +50,7 @@ if(isset($_REQUEST['wizard']))
 		default:
 			break;
 	}
+	$smarty->assign("errors", $errors);
 	$smarty->display("wizard.tpl");
 }
 else
@@ -53,10 +59,12 @@ else
 	{
 		require_once("generate.php");
 		$smarty->assign("showHero", false);
+		$smarty->assign("errors", $errors);
 		$smarty->display("report.tpl");
 	}
 	else
 	{
+		$smarty->assign("errors", $errors);
 		$smarty->assign("showHero", true);
 		$smarty->display("base.tpl");
 	}
@@ -106,6 +114,23 @@ function getWikimediaLanguages()
 	return $languages;
 }
 
+function handleWizard3()
+{
+	global $smarty, $domains;
+	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
+	{
+		$apiUrl = $_REQUEST['api'];
+		$_SESSION['api'] = $apiUrl;
+		
+		header("HTTP/1.1 303 See Other");
+		header("Location: {$_SERVER["SCRIPT_NAME"]}?wizard=4");
+	}
+	else
+	{
+		$smarty->assign("wizardPageTemplate", "wiz3.tpl");
+	}
+}
+
 function handleWizard2()
 {
 	global $smarty, $domains;
@@ -146,6 +171,8 @@ function handleWizard4()
 			);
 			
 		$smarty->assign("namespaces", $ds->getNamespaces());
+		$smarty->assign("sitename", $ds->siteinfo['sitename']);
+		$smarty->assign("sitebase", $ds->siteinfo['base']);
 		$smarty->assign("wizardPageTemplate", "wiz4.tpl");
 	}
 }
@@ -186,7 +213,7 @@ function handleWizard1()
 				$nextPage=4;
 				break;
 			case "ts":
-				$_SESSION['api'] = "http://wiki.toolserver.org/w/api.php";
+				$_SESSION['api'] = "https://wiki.toolserver.org/w/api.php";
 				$nextPage=4;
 				break;
 			////////////////////////////////////////////////////////////////////

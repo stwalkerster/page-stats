@@ -1,4 +1,4 @@
-<label class="control-label" for="pageName">Which page do you want to look at?</label>
+<label class="control-label" for="pageName">Which page do you want to look at on <a href="{$sitebase}">{$sitename}</a>?</label>
 <div class="input-prepend">
 	<span class="add-on">
 		<select class="span2" style="position: relative;left: -6px;top: -5px;" name="ns">
