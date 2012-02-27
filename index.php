@@ -2,16 +2,23 @@
 require_once("smarty/Smarty.class.php");
 $smarty = new Smarty();
 
-$domains = array(
-	"pedia" => "wikipedia.org",
-	"wikt" => "wiktionary.org",
-	"quote" => "wikiquote.org",
-	"books" => "wikibooks.org",
-	"source" => "wikisource.org",
-	"news" => "wikinews.org",
-	"versity" => "wikiversity.org",
-	);
+include_once("config.php");
+if(file_exists("config.local.php")){include_once("config.local.php");}
+	
+require_once("DataSource.php");
+require_once("ApiDataSource.php");
+require_once("DatabaseDataSource.php");
 
+$availabledatasources = array(
+	"db" => array(
+		"class" => "DatabaseDataSource",
+		),
+	"api" => array(
+		"class" => "ApiDataSource",
+		),
+	);
+	
+$dsconfig = $availabledatasources[$activeDataSource];
 session_start();
 
 if(isset($_REQUEST['wizard']))
@@ -30,6 +37,11 @@ if(isset($_REQUEST['wizard']))
 			handleWizard2();
 			$smarty->assign("wizProgress", 33);
 			break;
+		case 3:
+			break;
+		case 4:
+			handleWizard4();
+			$smarty->assign("wizProgress", 66);
 		default:
 			break;
 	}
@@ -37,8 +49,15 @@ if(isset($_REQUEST['wizard']))
 }
 else
 {
-	$smarty->assign("showHero", true);
-	$smarty->display("base.tpl");
+	if(isset($_REQUEST['wizard']) && $_REQUEST['wizard'] == "generate")
+	{
+		require_once("generate.php");
+	}
+	else
+	{
+		$smarty->assign("showHero", true);
+		$smarty->display("base.tpl");
+	}
 }
 
 function getWikimediaLanguages()
@@ -90,13 +109,42 @@ function handleWizard2()
 	global $smarty, $domains;
 	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 	{
-	
+		$apiUrl = "http://" . $_REQUEST['wmflanguage'] . "." . 
+			$domains[$_SESSION['wmfdomain']] . "/w/api.php";
+		$_SESSION['api'] = $apiUrl;
+		
+		header("HTTP/1.1 303 See Other");
+		header("Location: {$_SERVER["SCRIPT_NAME"]}?wizard=4");
 	}
 	else
 	{
 		$smarty->assign("wmflangs", getWikimediaLanguages());
 		$smarty->assign("rootdomain", $domains[$_SESSION['wmfdomain']]);
 		$smarty->assign("wizardPageTemplate", "wiz2.tpl");
+	}
+}
+
+function handleWizard4()
+{
+	global $smarty, $dsconfig, $ds, $username, $password, $domain;
+	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
+	{
+		$_SESSION['ns'] = $_REQUEST['ns'];
+		$_SESSION['title'] = $_REQUEST['title'];
+		header("HTTP/1.1 303 See Other");
+		header("Location: {$_SERVER["SCRIPT_NAME"]}?action=generate");
+	}
+	else
+	{
+		$ds = new $dsconfig["class"] (
+			$username, 
+			$password, 
+			$domain, 
+			$_SESSION['api'] 
+			);
+			
+		$smarty->assign("namespaces", $ds->getNamespaces());
+		$smarty->assign("wizardPageTemplate", "wiz4.tpl");
 	}
 }
 
@@ -136,7 +184,7 @@ function handleWizard1()
 				$nextPage=4;
 				break;
 			case "ts":
-				$_SESSION['api'] = "https://wiki.toolserver.org/w/api.php";
+				$_SESSION['api'] = "http://wiki.toolserver.org/w/api.php";
 				$nextPage=4;
 				break;
 			////////////////////////////////////////////////////////////////////
