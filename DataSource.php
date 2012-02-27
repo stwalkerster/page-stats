@@ -7,6 +7,8 @@ abstract class DataSource
 		$this->password = $password;
 		$this->domain = $domain;
 		$this->location = $location;
+		
+		$this->initialise();
 	}
 	
 	protected $username;
@@ -14,6 +16,8 @@ abstract class DataSource
 	protected $domain;
 	protected $location;
 
+	protected abstract function initialise();
+	
 	/**
 	 *	Gets the data for the specified page in the format:
 	 *

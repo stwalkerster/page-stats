@@ -2,6 +2,11 @@
 
 class DatabaseDataSource extends DataSource
 {
+	protected function initialise()
+	{
+	
+	}
+
 	public function getNamespaces()
 	{
 		
