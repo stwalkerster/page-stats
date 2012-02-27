@@ -34,19 +34,15 @@ if(isset($_REQUEST['wizard']))
 	{
 		case 1:
 			handleWizard1();
-			$smarty->assign("wizProgress", 0);
 			break;
 		case 2:
 			handleWizard2();
-			$smarty->assign("wizProgress", 33);
 			break;
 		case 3:
 			handleWizard3();
-			$smarty->assign("wizProgress", 33);
 			break;
 		case 4:
 			handleWizard4();
-			$smarty->assign("wizProgress", 66);
 		default:
 			break;
 	}
@@ -117,6 +113,7 @@ function getWikimediaLanguages()
 function handleWizard3()
 {
 	global $smarty, $domains;
+	$smarty->assign("wizProgress", 33);
 	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		$apiUrl = $_REQUEST['api'];
@@ -134,6 +131,8 @@ function handleWizard3()
 function handleWizard2()
 {
 	global $smarty, $domains;
+	
+	$smarty->assign("wizProgress", 33);
 	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		$apiUrl = "http://" . $_REQUEST['wmflanguage'] . "." . 
@@ -153,7 +152,9 @@ function handleWizard2()
 
 function handleWizard4()
 {
-	global $smarty, $dsconfig, $ds, $username, $password, $domain;
+	global $smarty, $dsconfig, $ds, $username, $password, $domain, $errors;
+	
+	$smarty->assign("wizProgress", 66);
 	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		$_SESSION['ns'] = $_REQUEST['ns'];
@@ -163,23 +164,35 @@ function handleWizard4()
 	}
 	else
 	{
-		$ds = new $dsconfig["class"] (
-			$username, 
-			$password, 
-			$domain, 
-			$_SESSION['api'] 
-			);
-			
-		$smarty->assign("namespaces", $ds->getNamespaces());
-		$smarty->assign("sitename", $ds->siteinfo['sitename']);
-		$smarty->assign("sitebase", $ds->siteinfo['base']);
-		$smarty->assign("wizardPageTemplate", "wiz4.tpl");
+		try
+		{
+			$ds = new $dsconfig["class"] (
+				$username, 
+				$password, 
+				$domain, 
+				$_SESSION['api'] 
+				);
+				
+			$smarty->assign("namespaces", $ds->getNamespaces());
+			$smarty->assign("sitename", $ds->siteinfo['sitename']);
+			$smarty->assign("sitebase", $ds->siteinfo['base']);
+			$smarty->assign("wizardPageTemplate", "wiz4.tpl");
+		
+		}
+		catch(Exception $ex)
+		{
+			$errors[] = $ex->getMessage();
+			$smarty->assign("wizardPage", 1);
+			handleWizard1();
+		}
 	}
 }
 
 function handleWizard1()
 {
+
 	global $smarty;
+	$smarty->assign("wizProgress", 0);
 	if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		$nextPage=2;
