@@ -21,6 +21,8 @@ if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST")
 	}
 	else
 	{
+		if(isset($_REQUEST['from']) && $_REQUEST['from'] == 
+	
 		if(isset($_REQUEST['jump']))
 		{
 			$output = $wizHead . $wiz[$_REQUEST['jump']] . $wizFoot;
