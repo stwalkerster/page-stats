@@ -32,10 +32,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Page Stats</a>
+          <a class="brand" href="?">Page Stats</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="?">Home</a></li>
               <li><a href="https://github.com/stwalkerster/page-stats">Source</a></li>
               <li><a href="https://github.com/stwalkerster/page-stats/issues">Bugs</a></li>
             </ul>

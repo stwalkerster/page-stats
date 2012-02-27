@@ -49,9 +49,11 @@ if(isset($_REQUEST['wizard']))
 }
 else
 {
-	if(isset($_REQUEST['wizard']) && $_REQUEST['wizard'] == "generate")
+	if(isset($_REQUEST['action']) && $_REQUEST['action'] == "generate")
 	{
 		require_once("generate.php");
+		$smarty->assign("showHero", false);
+		$smarty->display("report.tpl");
 	}
 	else
 	{
