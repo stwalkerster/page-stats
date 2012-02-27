@@ -8,6 +8,8 @@ $ds = new $dsconfig["class"] (
 	);
 
 $nslist = $ds->getNamespaces();
-	
-$smarty->assign("pagename", $nslist[$_SESSION['ns']] . ":" . $_SESSION['title']);
-$smarty->assign("api", $_SESSION['api']);
+
+$page = ($_SESSION['ns'] == 0 ? "" : $nslist[$_SESSION['ns']] . ":") . $_SESSION['title'];
+
+$smarty->assign("pagename", $page);
+$smarty->assign("pagelink", $ds->siteinfo['server'] . str_replace('$1', $page , $ds->siteinfo['articlepath']));
