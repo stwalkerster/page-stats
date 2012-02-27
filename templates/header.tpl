@@ -45,3 +45,7 @@
     </div>
 
     <div class="container">
+		{if $showHero eq true}{include file="hero.tpl"}{/if}
+		<div class="page-header">
+			<h1>Page Statistics Tool</h1>
+		</div>
