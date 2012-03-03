@@ -22,6 +22,8 @@ $availabledatasources = array(
 $dsconfig = $availabledatasources[$activeDataSource];
 session_start();
 
+$smarty->assign("active", "nothing");
+
 $errors = array();
 
 if(isset($_REQUEST['wizard']))
@@ -47,23 +49,36 @@ if(isset($_REQUEST['wizard']))
 			break;
 	}
 	$smarty->assign("errors", $errors);
+	$smarty->assign("active", "Wiz");
 	$smarty->display("wizard.tpl");
 }
 else
 {
-	if(isset($_REQUEST['action']) && $_REQUEST['action'] == "generate")
+	$smarty->assign("errors", $errors);
+	if(isset($_REQUEST['action']))
 	{
-		require_once("generate.php");
-		$smarty->assign("showHero", false);
-		$smarty->assign("errors", $errors);
-		$smarty->display("report.tpl");
+		if($_REQUEST['action'] == "generate")
+		{
+			require_once("generate.php");
+			$smarty->assign("showHero", false);
+			$smarty->display("report.tpl");
+		}
+		else
+		{
+			showMain($smarty);
+		}
 	}
 	else
 	{
-		$smarty->assign("errors", $errors);
-		$smarty->assign("showHero", true);
-		$smarty->display("base.tpl");
+		showMain($smarty);
 	}
+}
+
+function showMain($smarty)
+{
+	$smarty->assign("active", "Home");
+	$smarty->assign("showHero", true);
+	$smarty->display("base.tpl");
 }
 
 function getWikimediaLanguages()

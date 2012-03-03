@@ -35,7 +35,8 @@
           <a class="brand" href="?">Page Stats</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="?">Home</a></li>
+              <li{if $active == "Home"} class="active"{/if}><a href="?action=home">Home</a></li>
+			  <li{if $active == "Wiz"} class="active"{/if}><a href="?wizard=1">Wizard</a></li>
               <li><a href="https://github.com/stwalkerster/page-stats">Source</a></li>
               <li><a href="https://github.com/stwalkerster/page-stats/issues">Bugs</a></li>
             </ul>
