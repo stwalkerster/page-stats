@@ -2,6 +2,7 @@
 		<div class="row">
 			<p class="pull-right"><a href="#">Back to top</a></p>
 		</div>
+	<hr />
 		<div class="row">
 			<div class="span6">
 				<p><strong>Page Stats tool:</strong></p>
